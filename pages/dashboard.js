@@ -12,7 +12,7 @@ export default function dashboard() {
 
   async function getAddress() {
     const response = await fetcher(
-      "http://localhost:7000",
+      "http://ecobuild-env.eba-p5qfhucf.us-east-1.elasticbeanstalk.com/",
       "/get-articles/california%20plastic"
     );
     setArticles(response.articles);
