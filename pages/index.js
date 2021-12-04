@@ -64,7 +64,7 @@ export default function Home() {
         <div className="flex flex-col flex-1 bg-custom-blue">
           <div className="flex flex-col justify-center items-center h-full">
             <div>
-              <h4>ECOBUILD</h4>
+              <p>ECOBUILD</p>
             </div>
             <div className="source-sans text-custom-yellow text-3xl">
               your neighborhood news
