@@ -59,7 +59,7 @@ export default function dashboard() {
       setMapSource(
         "https://sjsugis.maps.arcgis.com/apps/webappviewer/index.html?id=27796ed377cb4811bee17253d362944b"
       );
-    } else if (mapSrc == "fire") {
+    } else if (mapSrc == "power plant") {
       setMapSource(
         "https://sjsugis.maps.arcgis.com/apps/instant/interactivelegend/index.html?appid=9e0fa040832c41539c309bd1b9bf9a9f"
       );
