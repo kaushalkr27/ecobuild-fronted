@@ -1,6 +1,6 @@
-const fetcher = async (baseUrl, endpoint, params = {}) => {
+const fetcher = async (topic) => {
   const res = await fetch(
-    "https://cors-everywhere.herokuapp.com/http://ecobuild-env.eba-p5qfhucf.us-east-1.elasticbeanstalk.com/get-articles/california%20pollution",
+    "https://cors-everywhere.herokuapp.com/http://ecobuild-env.eba-p5qfhucf.us-east-1.elasticbeanstalk.com/get-articles/california " + topic,
     {
       headers: {
         "origin": "x-requested-with"

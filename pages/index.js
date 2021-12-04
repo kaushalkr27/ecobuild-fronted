@@ -45,6 +45,16 @@ export default function Home() {
     setAddress(data.results[0].locations[0]);
   }
 
+  useEffect(() => {
+    if (localStorage.getItem('articles') == null) {
+      var array = [];
+      localStorage.setItem('articles', JSON.stringify(array))
+      console.log("SET");
+    }else{
+      console.log("Already there");
+    }
+  }, []);
+
   const getAddressFromZip = async (zip) => {
     const res = await fetch(
       "https://www.mapquestapi.com/geocoding/v1/address?key=llY4UkwTnJwAx8oCwsI20MELqCAo9RsO&location=" + zip

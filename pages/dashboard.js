@@ -2,9 +2,22 @@ import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import fetcher from "./api/swr_fetcher";
 import Article from "../components/article";
+import { BsBookmark, BsFillBookmarkCheckFill } from "react-icons/bs";
 
 export default function dashboard() {
+  const [localStorageData, setLocalStorageData] = useState([]);
+  const checkIfSaved = (title) => {
+    setLocalStorageData(JSON.parse(localStorage.getItem("articles")));
+    const index = localStorageData.findIndex((x) => x.title == title);
+    if (index > -1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const [articles, setArticles] = useState([]);
+  const [savedArticles, setSavedArtilces] = useState(false);
   const [mapSrc, setMapSrc] = useState("air");
   const [mapSource, setMapSource] = useState(
     "https://sjsugis.maps.arcgis.com/apps/webappviewer/index.html?id=27796ed377cb4811bee17253d362944b"
@@ -12,15 +25,14 @@ export default function dashboard() {
 
   async function getAddress() {
     const response = await fetcher(
-      "http://ecobuild-env.eba-p5qfhucf.us-east-1.elasticbeanstalk.com/",
-      "/get-articles/california%20plastic"
+      mapSrc
     );
     setArticles(response.articles);
   }
 
   useEffect(() => {
     getAddress();
-  }, []);
+  }, [mapSrc]);
 
   useEffect(() => {
     if (mapSrc == "health") {
@@ -56,7 +68,7 @@ export default function dashboard() {
         <div className="flex flex-col flex-1 bg-custom-blue">
           <div className="mt-8">
             <label htmlFor="cars" className="text-custom-yellow">
-              Choose a car:
+              Choose a map:
             </label>
             <select
               onChange={(e) => setMapSrc(e.target.value)}
@@ -78,21 +90,35 @@ export default function dashboard() {
           </div>
         </div>
         <div className="flex flex-col flex-1 bg-custom-yellow p-8">
-          <div className="text-xl text-custom-blue font-bold">
-            Articles for you
+          <div className="flex justify-around">
+            <div className="text-xl text-custom-blue font-bold">
+              Articles for you
+            </div>
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() => setSavedArtilces(!savedArticles)}
+            >
+              {savedArticles ? <BsFillBookmarkCheckFill /> : <BsBookmark />}
+              <h7 className="text-custom-blue font-bold ml-2">
+                Saved Articles
+              </h7>
+            </div>
           </div>
+
           <div className="">
-            {articles.map((item) => {
-              return (
-                <Article
-                  img={item.image}
-                  title={item.title}
-                  description={item.description}
-                  link={item.url}
-                  key={item.url}
-                />
-              );
-            })}
+            {articles
+              .map((item) => {
+                return (
+                  <Article
+                    img={item.image}
+                    title={item.title}
+                    description={item.description}
+                    link={item.url}
+                    key={item.url}
+                    savedArticles={savedArticles}
+                  />
+                );
+              })}
           </div>
         </div>
       </main>
