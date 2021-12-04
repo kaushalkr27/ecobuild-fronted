@@ -16,6 +16,12 @@ export default function dashboard() {
     }
   };
 
+  const [address, setAddress] = useState({});
+
+  useEffect(() => {
+    setAddress(JSON.parse(localStorage.getItem("address")));
+  }, []);
+
   const [articles, setArticles] = useState([]);
   const [savedArticles, setSavedArtilces] = useState(false);
   const [mapSrc, setMapSrc] = useState("air");
@@ -24,9 +30,7 @@ export default function dashboard() {
   );
 
   async function getAddress() {
-    const response = await fetcher(
-      mapSrc
-    );
+    const response = await fetcher(mapSrc);
     setArticles(response.articles);
   }
 
@@ -66,24 +70,27 @@ export default function dashboard() {
     <div className="flex flex-col items-center justify-center min-h-screen">
       <main className="flex tems-center justify-center w-full flex-1 text-center">
         <div className="flex flex-col flex-1 bg-custom-blue">
-          <div className="mt-8">
-            <label htmlFor="cars" className="text-custom-yellow">
-              Choose a map:
-            </label>
-            <select
-              onChange={(e) => setMapSrc(e.target.value)}
-              value={mapSrc}
-              name="cars"
-              id="cars"
-              className="outline-none border-2 border-custom-yellow text-custom-yellow rounded-lg px-2 py-2 ml-4 bg-custom-blue"
-            >
-              <option value="health">Covid - 19</option>
-              <option value="chemical">Chemical Safety</option>
-              <option value="food">Food Resources</option>
-              <option value="fuel">Alternative Fuels</option>
-              <option value="air">Air Quality Index</option>
-              <option value="fire">Fire Safety</option>
-            </select>
+          <div className="mt-8 flex justify-around items-center">
+            <div className="text-custom-yellow">{address.adminArea5}, {address.adminArea3}, {address.adminArea1}</div>
+            <div>
+              <label htmlFor="cars" className="text-custom-yellow">
+                Choose a map:
+              </label>
+              <select
+                onChange={(e) => setMapSrc(e.target.value)}
+                value={mapSrc}
+                name="cars"
+                id="cars"
+                className="outline-none border-2 border-custom-yellow text-custom-yellow rounded-lg px-2 py-2 ml-4 bg-custom-blue"
+              >
+                <option value="health">Covid - 19</option>
+                <option value="chemical">Chemical Safety</option>
+                <option value="food">Food Resources</option>
+                <option value="fuel">Alternative Fuels</option>
+                <option value="air">Air Quality Index</option>
+                <option value="power plant">Power Plants</option>
+              </select>
+            </div>
           </div>
           <div className="w-full h-screen p-8">
             <iframe className="w-full h-4/5 rounded" src={mapSource}></iframe>
@@ -106,19 +113,18 @@ export default function dashboard() {
           </div>
 
           <div className="">
-            {articles
-              .map((item) => {
-                return (
-                  <Article
-                    img={item.image}
-                    title={item.title}
-                    description={item.description}
-                    link={item.url}
-                    key={item.url}
-                    savedArticles={savedArticles}
-                  />
-                );
-              })}
+            {articles.map((item) => {
+              return (
+                <Article
+                  img={item.image}
+                  title={item.title}
+                  description={item.description}
+                  link={item.url}
+                  key={item.url}
+                  savedArticles={savedArticles}
+                />
+              );
+            })}
           </div>
         </div>
       </main>
